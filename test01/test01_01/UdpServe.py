@@ -1,7 +1,6 @@
 from socket import *
 import threading
 import time
-
 data=None
 addr=None
 data_arr = []
@@ -26,8 +25,8 @@ def send_Message():
 
 if __name__ == '__main__':
     udp_serve = socket(AF_INET,SOCK_DGRAM)
-    host = "127.0.0.2"
-    port = 8818
+    host = "10.13.138.171"
+    port = 10002
     udp_serve.bind((host,port))
     print("欢迎来到新新聊天室")
     th01 = threading.Thread(target=listen_Message)  #用线程解决了  recvfrom监听等待  和   input等待输入等待冲突的问题

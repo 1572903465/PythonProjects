@@ -41,29 +41,6 @@ th01 = threading.Thread(target=liten_Message)
 th02 = threading.Thread(target=send_Message)
 th01.start()
 th02.start()
-# while True:
-#     if(data is not None):
-#         while True:
-#             time.sleep(0.5)
-#             data_choice = input("请选择你的功能 按1接受消息，按2发送消息，按3接受消息并发送消息：\n")
-#             if(data_choice == "1"):
-#                 if (data is not None):
-#                     receive_Message()
-#                 else:
-#                     print("对方未发送新消息！")
-#                     continue
-#             elif(data_choice == "2"):
-#                 send_Message()
-#             elif(data_choice == "3"):
-#                 print("data:", data.decode("utf-8"))
-#                 if(data is not None):
-#                     receive_Message()
-#                 else:
-#                     print("对方未发送新消息！")
-#                 send_Message()
-#             else:
-#                 print("输入错误请重新输入")
-#                 continue
 
 
 
