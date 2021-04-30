@@ -25,7 +25,7 @@ def send_Message():
 
 if __name__ == '__main__':
     udp_serve = socket(AF_INET,SOCK_DGRAM)
-    host = "10.13.138.171"
+    host = "127.0.0.2"
     port = 10002
     udp_serve.bind((host,port))
     print("欢迎来到新新聊天室")

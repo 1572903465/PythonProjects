@@ -1,17 +1,12 @@
 from socket import *
-import threading
-import time
-
-
+import threading,time
 data=None
 addr=None
-
 def listen_Message():
     while True:
         global data,addr                                #global全局变量
         data,addr = udp_serve.recvfrom(1024)
-        if (data is not None):
-          #  print("滴滴：主人，您收到了一条新消息")
+        if data :
             print("您收到的新消息:", data.decode("utf-8"))
             data = None
         #return data,addr

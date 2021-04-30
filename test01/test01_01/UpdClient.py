@@ -28,7 +28,7 @@ def fristSend_Message():
     upd_client.sendto(data_send, address)
 
 if __name__ == '__main__':
-    address=('10.13.138.140',12347)
+    address=('127.0.0.2',10002)
     print("欢迎来到新新聊天室")
     upd_client = socket(AF_INET, SOCK_DGRAM)
     fristSend_Message()
