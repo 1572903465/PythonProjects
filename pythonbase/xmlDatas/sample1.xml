@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<frtest>
+    <Customers>
+        <Name>ALFKI</Name>
+        <type>ALfreds Futterkiste</type>
+        <value>90</value>
+    </Customers>
+    <Customers>
+        <Name>ANATR</Name>
+        <type>Ana Trujillo Emparedados y helados</type>
+        <value>90</value>
+    </Customers>
+</frtest>

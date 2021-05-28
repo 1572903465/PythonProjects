@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <script src="jquery-3.3.1.js" type="text/javascript"></script>-->
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- 官网提供的 axios 在线地址 -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>欢迎:{{g.user.username}}</h1>
+        <p>用户编号 : {{g.user.id}}</p>
+        <a href="#">退出登录</a>
+        <h1>欢迎:{{userinfo.username}}</h1>
+        <button id="button" @click="click">{{userinfo.username}}</button>
+        <p>用户编号 : {{userinfo.uid}}</p>
+        <a href="#">退出登录</a>
+    </div>
+</body>
+    <script>
+        var ulElement = document.getElementById("button");
+        ulElement.addEventListener("click",function (event) {
+            var item_name = event.target.textContent;
+            $.ajax({
+                url:"/modifyTeim",
+                data:{
+                    "name":item_name
+                },
+                success:function (result) {
+                    if(result.success===0){
+                        alert("操作成功")
+                    }else{
+                        alter("操作失败")
+                    }
+                }
+            })
+        })
+        // var app = new Vue({
+        //     el:"#app",
+        //     data:{
+        //         userinfo:{
+        //             "username":"13",
+        //             "uid":'456'
+        //         }
+        //     },
+        //     methods:{
+        //         click:function () {
+        //             var that =this;
+        //             axios({
+        //                 method: 'get',
+        //                 url: '/modifyTeim',
+        //                 data:that.userinfo
+        //             })
+        //         },
+        //     }
+        // })
+    </script>
+</html>

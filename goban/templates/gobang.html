@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>五子棋</title>
+		<link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+{#        <script src="js/jquery-3.3.1.js"></script>#}
+{#        <script src="js/recoder.wav.min.js"></script>#}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"></script>
+        <script src="../static/js/jquery-3.3.1.js"></script>
+        <script src="../static/js/recoder.wav.min.js"></script>
+
+	</head>
+	<body>
+		<div id="container">
+			<div id="chessboard">
+
+			</div>
+		</div>
+		<div id="tool">
+			 <ul>
+                <li><p id="infor">玩家 VS 玩家</p></li>
+                <li><p id="time">00:00</p></li>
+                <li><p id="step">步数：0</p></li>
+                 <li><a class="button  round red" href="javascript:void(0);" onclick="jump(8)">重新开始</a></li>
+                <li><a class="button  round red" href="javascript:void(0);" onclick="jump(7)" id="intercomBegin">录制语音</a></li>
+                  <li><a class="button  round red" href="javascript:void(0);" onclick="jump(9)" id="intercomEnd">结束语音</a></li>
+                <li><a class="button  round red" href="javascript:void(0);" onclick="jump(6)">悔棋</a></li>
+
+            </ul>
+		</div>
+        <div id="gameOver">
+            <p id="gameOverTitle"></p>
+            <p id="gameOverContent"></p>
+        </div>
+	</body>
+	<script>
+
+    var socket;
+    $(document).ready(function () {
+        namespace = '/test_conn'
+        socket = io.connect('ws://127.0.0.1:5000/test_conn');
+        //或者使用 var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+      //  socket.on('server_response', function (res) {
+        //    var msg = res.data;
+        //    console.log(msg);
+          //  document.getElementById("h1_1").innerHTML = '<p>' + msg + '</p>';
+        //});
+
+        //监听回复的消息
+        socket.on('chess_position',function(data){
+            if (data.code == '200'){
+                console.log("respose");
+                console.log(data.x,data.y);
+
+                game.down(data.x,data.y,(game.step+2)%2);// 0是白子 1是黑子
+                console.log(game.points)
+            }
+            else{
+                console.log('ERROR:' + data.msg);
+            }
+        });
+        //监听回复的消息
+        socket.on('win',function(data){
+            if (data.code == '200'){
+                alert(data.msg)
+            }
+            else{
+                console.log('ERROR:' + data.msg);
+            }
+        });
+
+
+    });
+
+         //简单控制台直接测试方法：在任意(无CSP限制)页面内加载Recorder，加载成功后再执行一次本代码立即会有效果，import("https://xiangyuecn.gitee.io/recorder/recorder.mp3.min.js").then(function(s){console.log("import ok")}).catch(function(e){console.error("import fail",e)})
+    var rec;
+    /**调用open打开录音请求好录音权限**/
+    var recOpen = function (success) {//一般在显示出录音按钮或相关的录音界面时进行此方法调用，后面用户点击开始录音时就能畅通无阻了
+        rec = Recorder({
+            type: "wav", sampleRate: 16000, bitRate: 16 //mp3格式，指定采样率hz、比特率kbps，其他参数使用默认配置；注意：是数字的参数必须提供数字，不要用字符串；需要使用的type类型，需提前把格式支持文件加载进来，比如使用wav格式需要提前加载wav.js编码引擎
+            , onProcess: function (buffers, powerLevel, bufferDuration, bufferSampleRate, newBufferIdx, asyncEnd) {
+                //录音实时回调，大约1秒调用12次本回调
+                //可利用extensions/waveview.js扩展实时绘制波形
+                //可利用extensions/sonic.js扩展实时变速变调，此扩展计算量巨大，onProcess需要返回true开启异步模式
+            }
+        });
+
+        //var dialog=createDelayDialog(); 我们可以选择性的弹一个对话框：为了防止移动端浏览器存在第三种情况：用户忽略，并且（或者国产系统UC系）浏览器没有任何回调，此处demo省略了弹窗的代码
+        rec.open(function () {//打开麦克风授权获得相关资源
+            //dialog&&dialog.Cancel(); 如果开启了弹框，此处需要取消
+            //rec.start() 此处可以立即开始录音，但不建议这样编写，因为open是一个延迟漫长的操作，通过两次用户操作来分别调用open和start是推荐的最佳流程
+
+            success && success();
+        }, function (msg, isUserNotAllow) {//用户拒绝未授权或不支持
+            //dialog&&dialog.Cancel(); 如果开启了弹框，此处需要取消
+            console.log((isUserNotAllow ? "UserNotAllow，" : "") + "无法录音:" + msg);
+        });
+    };
+
+    /**开始录音**/
+    function recStart() {//打开了录音后才能进行start、stop调用
+        rec.start();
+    };
+
+
+    /**结束录音**/
+    function recStop() {
+        rec.stop(function (blob, duration) {
+            console.log(blob, (window.URL || webkitURL).createObjectURL(blob), "时长:" + duration + "ms");
+            rec.close();//释放录音资源，当然可以不释放，后面可以连续调用start；但不释放时系统或浏览器会一直提示在录音，最佳操作是录完就close掉
+            rec = null;
+            console.log(blob)
+
+            //已经拿到blob文件对象想干嘛就干嘛：立即播放、上传
+             socket.emit('luying', blob)
+            /*** 【立即播放例子】 ***/
+            // {#var audio = document.createElement("audio");#}
+            // {#audio.controls = true;#}
+            // {#document.body.appendChild(audio);#}
+            // {#//简单利用URL生成播放地址，注意不用了时需要revokeObjectURL，否则霸占内存#}
+            // {#audio.src = (window.URL || webkitURL).createObjectURL(blob);#}
+            // {#audio.play();#}x
+        }, function (msg) {
+            console.log("录音失败:" + msg);
+            rec.close();//可以通过stop方法的第3个参数来自动调用close
+            rec = null;
+        });
+    };
+
+        //这里假设立即运行，只录3秒，录完后立即播放，本段代码copy到控制台内可直接运行
+    function xiaqi() {
+        recOpen(function () {
+            recStart();
+            // {#setTimeout(recStop, 3000);#}
+        });
+    }
+
+    var begin = document.getElementById('intercomBegin');
+    begin.onclick = function () {
+        xiaqi()
+    }
+    var end = document.getElementById('intercomEnd');
+    end.onclick = function () {
+        recStop()
+    }
+
+
+		let init_TIME = parseInt(new Date().getTime()/1000);
+		/*****************自适应函数*********************/
+        let selfCenter = (id) =>{
+            let winH = parseInt($('body').height());
+            let winW = parseInt($('body').width());
+            console.log(winH)
+            console.log(winW)
+            $('#'+id).css({
+                marginTop : (winH-parseInt($('#'+id).height()))/2 +'px',
+                marginLeft : (winW-parseInt($('#'+id).width()))/2 +'px',
+            })
+
+        }
+        selfCenter('container')
+
+         let jump =(key) =>{
+            switch(key){
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+
+                    break;
+                case 5:
+
+                    break;
+                case 6:
+                    game.regret();
+                    break;
+                case 7:
+
+                    break;
+                case 8:
+                    clearPoints();
+                    history.go(0);
+                    break;
+                case 9:
+
+                    break;
+
+            }
+        }
+        $('#container').on('click',function(e){
+            console.log('棋盘被点击了！');
+            e = e || window.event;
+            console.log(e.pageX,e.pageY)
+            if(e.pageX||e.pageY){
+                movex = e.pageX - parseInt($("#container").css('marginLeft'))-18;
+                movey = e.pageY - parseInt($("#container").css('marginTop'))-18;
+            }
+            console.log(movex,movey)
+            console.log(game.getPoints(movex,movey))
+            let arr = game.getPoints(movex,movey);
+            game.down(arr[0],arr[1],(game.step+2)%2);// 0是白子 1是黑子
+            point = [arr[0],arr[1],(game.step+2)%2]
+            $.ajax({
+                url:"/down",
+                data:{
+                    "pointX":arr[0],
+                    "pointy":arr[1],
+                    "color":(game.step+2)%2
+                },
+                success:function (result) {
+                    console.log(result.success)
+                    if(result.success===0){
+                        alert("黑棋胜利")
+
+                    }else if (result.success===1){
+                        alert("白棋胜利")
+
+                    }
+                }
+            })
+        })
+
+        setInterval(() => {
+            if(init_TIME==undefined){}
+            else {
+                let t =parseInt(new Date().getTime()/1000) - init_TIME;
+                let m = parseInt(t/60);
+                t=t%60;
+
+                let txt = '';
+                if(m==0) txt += '00:';
+                else if(m<10) txt +='0'+m+':';
+                else txt += m+':';
+
+                if(t==0) txt +='00';
+                else if(t<10) txt +='0'+t;
+                else txt+=t;
+
+                $('#time').html(txt);
+            }
+        }, 500);
+
+        function GAME(){
+            this.step = -1;
+            this.fiveGroup = [];
+            this.imgObj = [];
+            this.points = [];
+
+            //纵向的
+            for(let y=1;y<=15;y++)
+                for(let x=1;x<=11;x++)
+                    this.fiveGroup.push([[x,y],[x+1,y],[x+2,y],[x+3,y],[x+4,y]]);
+            //横向的
+            for(let x=1;x<=15;x++)
+                for(let y=1;y<=11;y++)
+                    this.fiveGroup.push([[x,y],[x,y+1],[x,y+2],[x,y+3],[x,y+4]]);
+            // '/'左半边
+            for(let y=5;y<=15;++y)
+                for(let l=1;l<y-4;++l)
+                    this.fiveGroup.push([[l,y],[l+1,y-1],[l+2,y-2],[l+3,y-3],[l+4,y-4]]);
+            // '/'右半边
+            for(let x=2;x<=11;++x)
+			    for(let l=15;l>=x+3;l--)
+				    this.fiveGroup.push([[x,l],[x+1,l-1],[x+2,l-2],[x+3,l-3],[x+4,l-4]]);
+			// '\'左部分
+            for(let x=11;x>=1;x--)
+                for(let l=1;l<12-x;l++)
+                    this.fiveGroup.push([[x,l],[x+1,l+1],[x+2,l+2],[x+3,l+3],[x+4,l+4]]);
+            // '\'右部分
+            for(let y=2;y<=11;y++)
+                for(let l=1;l<=12-y;l++)
+                    this.fiveGroup.push([[y,l],[y+1,l+1],[y+2,l+2],[y+3,l+3],[y+4,l+4]]);
+
+        }
+        GAME.prototype = {
+            // 根据点击坐标，转换成点坐标
+            getPoints : function (x,y){
+                let X,Y,flag=0;
+                for(let i=1;i<=15;i++){
+                    if(x<=(i-1)*42+21&&x>(i-1)*42-21) X=i;
+                    if(y<=(i-1)*42+21&&y>(i-1)*42-21) Y=i;
+                }
+
+                this.points.forEach(arr => {
+                    if(arr[0]==X && arr[1]==Y) flag=1;
+                })
+                if(flag) return;
+                return [X,Y];
+            },
+            // 绘画棋子
+            drawChess : function(i){
+                let img = $(new Image());
+                img.attr({
+                    'src': '../static/images/'+(this.points[i][2]==1?'black':'white')+'.png',
+                    'class':'chess'
+                })
+                img.css({
+                    'margin-left':(this.points[i][0]-1)*42-15+'px',
+                    'margin-top':(this.points[i][1]-1)*42-15+'px',
+                })
+
+                $('#chessboard').append(img);
+                this.imgObj.push(img);
+            },
+            down:function(x,y,color){
+            	this.step++;
+            	let a = this.step+1;
+                $("#step").html('步数：'+a);
+            	this.points.push([x,y,color]);
+            	this.drawChess(this.step);
+            },
+             regret : function(){
+                if(this.step==-1) return;
+                this.imgObj[this.step--].remove();
+                this.imgObj.pop();
+                this.points.pop();
+                let a = this.step+1;
+                $("#step").html('步数：'+a);
+                $.ajax({
+                url:"/regret",
+            })
+            },
+        }
+            // console.log(game.getPoints(),movex,movey)
+          let game = new GAME();
+          {#console.log(game.fiveGroup);#}
+          function clearPoints(){
+              $.ajax({
+                  url: "/clearPoints",
+                  async: false,
+                  success: function (result) {
+                      if (result.success === 0) {
+                          console.log("清除成功")
+                      } else {
+                          console.log("清除失败")
+                      }
+                  }
+              })
+          }
+        window.onbeforeunload = function () {
+              clearPoints();
+              console.log("清除points");
+        }
+        window.onload = function() {
+              clearPoints();
+              console.log("清除points");
+        }
+
+	</script>
+</html>

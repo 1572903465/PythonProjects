@@ -1,0 +1,7 @@
+
+{
+	"resultCode":"1",
+	"resultMsg":"success", "reqId":"7d7705b6-9dc2-4334-a358-695b9877e8fe",
+	"systemTime": "1610211175826",
+	"videoInfo":{"playSta":"1","video_image":"https://image.pearvideo.com/cont/20200725/cont-1688054-12436266.jpg","videos":{"hdUrl":"","hdflvUrl":"","sdUrl":"","sdflvUrl":"","srcUrl":"https://video.pearvideo.com/mp4/adshort/20200725/1610211175826-15286946_adpkg-ad_hd.mp4"}}
+}

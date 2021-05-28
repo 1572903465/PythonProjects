@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	用户登录
+</title><link href="Css/login.css" rel="stylesheet" type="text/css" /><link href="Css/button.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" language="javascript">
+        function changeCode() {
+            var objImg = document.getElementById("imgCode");
+            objImg.src = "CheckCode.aspx?rnd=" + Math.random();
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <form name="form1" method="post" action="default.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="form1">
+<div>
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTg3MDA3NzAwOA9kFgICAw9kFggCAQ8PFgIeB1Zpc2libGVoZGQCAw8PFgIfAGdkZAIFDw9kFgIeB29uZm9jdXMFDnRoaXMuc2VsZWN0KCk7ZAIJDw9kFgQeBXZhbHVlZB8BBQ50aGlzLnNlbGVjdCgpO2RkIK4QSU7JWDU1Kqsyukg2NqyUCRvCGBfPT7aCiz4KHd8=" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=SEHeUBonebtgwBA7FcORpU6B0ZEc83ahOLs0m2qVmFMpQIDF_K1G-zqz6_FOQZrkS8K9wVciaWLDMmh2BnUYeGlXPPeOb61rtm_fcavSleM1&amp;t=635328527960000000" type="text/javascript"></script>
+
+
+<script src="/WebResource.axd?d=qsfi2e1yu7iIr5K7rmCRELNTgCqYeuSTTq54SI_jWqlGf7G0VLfGUeFh5n_NyeIkvijlEfWjaUizBgNcfI7znT978Yixq7JuY83htvBBxEU1&amp;t=635328527960000000" type="text/javascript"></script>
+<script src="/WebResource.axd?d=-b1HAEufl-S6LQGL5M0FXnIg6chf1EqWGNYd-3w8YD4qTYf8qlxtpr82cWiol-sARi08ndOssQDj4JM16fVk4HrhG4a_yQLaqjrgckdcMQY1&amp;t=635328527960000000" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAVBHFaBoQZ+AWyiX5cdxoQZhI6Xi65hwcQ8/QoQCF8JIZ/NcOJr6eLkhJ4xDLXjUJKFa3z02QmQnYFjj3wKxfjrop4oRunf14dz2Zt2+QKDEAQDMBfcaqvY0VPXQNBuXZrTdobcXDAW2CDvtpZKYqav" />
+</div>
+    <div id="head-wrap">
+        <div class="head">
+            <div class="logo">
+            </div>
+        </div>
+    </div>
+    <div id="Container">
+        <div id="main">
+            <div id="content">
+                <div id="left">
+                    
+                    <img id="Img" src="images/Login/pic1.png" style="height:360px;width:460px;border-width:0px;" />
+                </div>
+                <div id="right">
+                    <table border="0" align="center" cellpadding="0" cellspacing="0" width="340px" style="width: 340px;">
+                        <tr>
+                            <td background="images/login/bg_login.png">
+                                <img src="images/Login/login_top1.png" width="340" height="64" alt="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td background="images/login/bg_login.png" height="20px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td background="images/login/bg_login.png">
+                                <table border="0" align="center" cellpadding="0" cellspacing="0" style="width: 100%">
+                                    <tr>
+                                        <td width="80" align="right">
+                                            用户名
+                                        </td>
+                                        <td align="left" class="loginTD" width="230">
+                                            <input name="tbUserName" type="text" id="tbUserName" onfocus="this.select();" style="width:180px;" />
+                                            <span id="RequiredFieldValidator1" style="color:Red;visibility:hidden;">必填</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="loginBackground">
+                                        <td align="right" width="80">
+                                            密&nbsp;&nbsp;码
+                                        </td>
+                                        <td align="left" class="loginTD" width="230">
+                                            <input name="tbPassWord" type="password" id="tbPassWord" value onfocus="this.select();" style="width:180px;" />
+                                            <span id="RequiredFieldValidator2" style="color:Red;visibility:hidden;">必填</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="loginBackground">
+                                        <td align="right" width="80">
+                                            验证码
+                                        </td>
+                                        <td align="left" class="loginTD" width="230">
+                                            <div>
+                                                <div style="width: 80px; float: left;">
+                                                    <input name="txtCode" type="text" id="txtCode" style="width:60px;" />
+                                                </div>
+                                                <div style="width: 80px; float: left; padding-top: 2px;">
+                                                    <img alt="看不清，换一张" id="imgCode" src="CheckCode.aspx" onclick="javascript:return changeCode();"
+                                                        style="cursor: pointer;" />
+                                                </div>
+                                                <div style="width: 40px; float: left; padding-top: 20px;">
+                                                    <a onclick="javascript:return changeCode();" href="#">换一张</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="loginBackground">
+                                        <td colspan="2" align="center" style="text-align: center; width: 340px;">
+                                            <div style="width: 100%;">
+                                                <div style="width: 40%; float: left; text-align: right;">
+                                                    <input type="submit" name="btnLogin" value=" " onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;btnLogin&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="btnLogin" class="btn_login" />
+                                                    
+                                                </div>
+                                                <div style="width: 60%; float: left; text-align: center;">
+                                                    <input type="button" value="忘记密码(学生)" class="btn_bg5" onclick="javascript:location='InitPwd.aspx';" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="images/Login/login_bottom.png" width="340" height="16">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("RequiredFieldValidator1"), document.getElementById("RequiredFieldValidator2"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var RequiredFieldValidator1 = document.all ? document.all["RequiredFieldValidator1"] : document.getElementById("RequiredFieldValidator1");
+RequiredFieldValidator1.controltovalidate = "tbUserName";
+RequiredFieldValidator1.errormessage = "必填";
+RequiredFieldValidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+RequiredFieldValidator1.initialvalue = "";
+var RequiredFieldValidator2 = document.all ? document.all["RequiredFieldValidator2"] : document.getElementById("RequiredFieldValidator2");
+RequiredFieldValidator2.controltovalidate = "tbPassWord";
+RequiredFieldValidator2.errormessage = "必填";
+RequiredFieldValidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+RequiredFieldValidator2.initialvalue = "";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        WebForm_AutoFocus('tbUserName');//]]>
+</script>
+</form>
+</body>
+</html>

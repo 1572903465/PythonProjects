@@ -1,0 +1,54 @@
+聚焦爬虫：爬取页面中指定的页面内容
+    - 编码流程：
+        - 指定url
+            - UA伪装
+            - 请求参数的处理
+        - 发起请求
+        - 获取响应数据
+        - 数据解析
+        - 持久化存储
+
+数据解析分类：
+    - 正则
+    - bs4
+    - xpath
+
+数据解析原理概述：
+    - 解析度局部的文本内容都会在标签之间或者标签对应的属性中进行存储
+    - 1.进行指定标签的定位
+    - 2.标签或者标签对应的属性中存储的数据值进行提取 （解析）
+<div class="thumb">
+
+<a href="/article/123719650" target="_blank">
+<img src="//pic.qiushibaike.com/system/pictures/12371/123719650/medium/YMSTHJMN9GLPDVG0.jpg" alt="糗事#123719650" class="illustration" width="100%" height="auto">
+</a>
+</div>
+
+ex = '<div class="thumb">.*?<img src="(.*?)" alt.*?</div>'
+
+bs4数据解析
+    - 数据解析的原理
+        - 1.标签定位
+        - 2.提取标签、标签属性中存储的数据值
+    - bs4数据解析的原理:
+        - 1.实例化一个BeautifulSoup的对象,并且将页面源码数据加载到该对象中
+        - 2.通过调用BeautifulSoup对象中相关的属性或者方法进行标签定位或者数据提取
+     - 环境安装:
+        -pip install bs4
+        -pip install lxml
+     - 如何实例化BeautifulSoup对象:
+        - from bs4 importBeautifulSoup
+        - 对象的实例化
+            - 1.将本地的html文档中的数据加载到该对象中
+                        fp = open('./四川师范大学.html','r',encoding='utf-8')
+                        soup = BeautifulSoup(fp,'lxml')
+                - 2.将互联网上获取到的页面资源加载到该对象中
+                    page_text = response.text
+                    soup =   soup = BeautifulSoup( page_text, 'lxml')
+        - 提供的用于数据解析的方法和属性（soup实例化对象）
+            -soup.tagName:返回的是html中第一次出现的tagName 标签
+            -soup.find():
+                -find('tagName'): 等同于soup.tagName
+                -属性定位:  soup.find('div',class_= 'className')
+            -soup.find_all('tagName'): 返回符合要求的所有标签，返回值为列表
+            -soup.select('某种选择器(id, class, 标签等选择器)')
