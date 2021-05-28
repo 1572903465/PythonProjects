@@ -2,12 +2,30 @@
 import xml
 import xml.etree.ElementTree as ET
 import pandas as pd
+import os
+
 """
 实现从xml文件中读取数据
 """
 # 全局唯一标识
 unique_id = 1
 sequence_id = 0
+
+
+# 获取文件夹下面的所有文件目录
+# 输入文件夹名
+# 输出文件夹下文件目录名
+def all_path(dirname):
+    path_list = []#所有的文件
+    for maindir, subdir, file_name_list in os.walk(dirname):
+        # print("1:",maindir) #当前主目录
+        # print("2:",subdir) #当前主目录下的所有目录
+        # print("3:",file_name_list)  #当前主目录下的所有文件
+        for filename in file_name_list:
+            path = os.path.join(maindir, filename)#合并成一个完整路径
+            path_list.append(path)
+    return path_list
+
 
 # 遍历所有的节点
 def walkData(root_node, parent_id, level, result_list):
@@ -27,6 +45,10 @@ def walkData(root_node, parent_id, level, result_list):
         walkData(child, parent_id, level + 1, result_list)
     return
 
+
+# 创建一个空白节点列表
+# 输入 节点名，节点数量
+# 输入 子节点列表
 def create_element(root_node,count):
     element_list = []
     # print(count)
@@ -34,6 +56,7 @@ def create_element(root_node,count):
         count -= 1
         element_list.append(root_node.makeelement('*',{}))
     return element_list
+
 
 # 生成新的序列
 def generate_sequence(root_node,level, childrens_list,children_dict,child_count):
@@ -63,6 +86,7 @@ def generate_sequence(root_node,level, childrens_list,children_dict,child_count)
     return
 
 
+# 获取源树的序列
 def getXmlData(file_name):
     level = 1  # 节点的深度从1开始
     result_list = []
@@ -70,21 +94,26 @@ def getXmlData(file_name):
     walkData(root, 0,level, result_list)
     return result_list
 
+
+# 获取补码树去除叶子节点的深度遍历序列，和数值化序列
+# 输入xml路径，补全字典
+# 补全树深度遍历序列列表
 def getXMlSequence(file_name,children_dict):
     level = 1  # 节点的深度从1开始
     childrens_list = []
     root = ET.parse(file_name).getroot()
-    # children_dict ={
-    #     1: 1,
-    #     2: 3,
-    #     3: 3,
-    #     4: 2,
-    #     5: 0
-    # }
-    children_dict[len()]
+    children_dict ={
+        1: 1,
+        2: 3,
+        3: 3,
+        4: 2,
+        5: 0
+    }
+    # children_dict[len()]
     generate_sequence(root, level, childrens_list, children_dict,3)
     return childrens_list
 
+# 获取parent_childrens_count
 def get_parent_childrens_count(file_name):
     # 'd:\\fenlei2.xml'
     # file_name = './a.xml'
@@ -106,8 +135,7 @@ def get_parent_childrens_count(file_name):
     parent_childrens_count = []
     for i in list(grouped.count().index): # i是parent
         # print(df[df["parent"] == i])
-        # print(i,df[df["parent"] == i].iloc[0,2],df[df["parent"] == i].shape[0]) # parent,level,chindrens
-        parent_childrens_count.append([i,df[df["parent"] == i].iloc[0,2],df[df["parent"] == i].shape[0]])
+        parent_childrens_count.append([i,df[df["parent"] == i].iloc[0,2],df[df["parent"] == i].shape[0]]) # parent,level,chindrens
     # print(parent_childrens_count)
     childrens_count = {}
     for i in parent_childrens_count:
@@ -116,48 +144,24 @@ def get_parent_childrens_count(file_name):
                 childrens_count[i[1]] = i[2]
         else:
             childrens_count[i[1]] = i[2]
-
     # print(childrens_count)
     return parent_childrens_count
-    # u = df["level"].unique() # 返回NumPy数组ndarray中唯一元素值的列表
-    # print(u)
-    # print(type(u))
-    # vc = df["level"].value_counts()
-    # print(vc)
-    # print(type(vc))
-    # print(df.iloc[:,[1,2]])
-    # for x in R:
-    #     print(x)
-    #     pass
 
+# 获取xml_相似度
+#
 def xml_similarity_count():
     # 'd:\\fenlei2.xml'
-    file_name = './a.xml'
-    parent_childrens_count = get_parent_childrens_count(file_name)
-    print(parent_childrens_count)
-    childrens_count = {}
-    for i in parent_childrens_count:
-        if i[1] in childrens_count:
-            if childrens_count[i[1]] < i[2]:
-                childrens_count[i[1]] = i[2]
-        else:
-            childrens_count[i[1]] = i[2]
-    file_name = './b.xml'
-    parent_childrens_count = get_parent_childrens_count(file_name)
-    for i in parent_childrens_count:
-        if i[1] in childrens_count:
-            if childrens_count[i[1]] < i[2]:
-                childrens_count[i[1]] = i[2]
-        else:
-            childrens_count[i[1]] = i[2]
-        if i[1] + 1 not in childrens_count:
-            childrens_count[i[1] + 1] = 0
-    print(childrens_count)
-    children_list = get_parent_childrens_count(file_name,childrens_count)
-    for x in children_list:
-        print(x)
-        pass
-
+    folder_path = "../xmlDatas"
+    file_name_index = all_path(folder_path)
+    file_name_colums = [i for i in file_name_index]
+    print(file_name_index)
+    print(file_name_colums)
+    for index in file_name_index:
+        child_index = get_parent_childrens_count(index)
+        for colums in file_name_colums:
+            child_colims = get_parent_childrens_count(colums)
+            print(index,colums)
+            print(child_index,child_colims)
 
 
 if __name__ == '__main__':

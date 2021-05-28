@@ -1,5 +1,6 @@
 import os
 
+# 获取文件夹下面的所有文件目录
 def all_path(dirname):
     result = []#所有的文件
     for maindir, subdir, file_name_list in os.walk(dirname):
