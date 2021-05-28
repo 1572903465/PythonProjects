@@ -74,26 +74,22 @@ def getXMlSequence(file_name,children_dict):
     level = 1  # 节点的深度从1开始
     childrens_list = []
     root = ET.parse(file_name).getroot()
-    children_dict ={
-        1: 1,
-        2: 3,
-        3: 3,
-        4: 2,
-        5: 0
-    }
+    # children_dict ={
+    #     1: 1,
+    #     2: 3,
+    #     3: 3,
+    #     4: 2,
+    #     5: 0
+    # }
+    children_dict[len()]
     generate_sequence(root, level, childrens_list, children_dict,3)
     return childrens_list
 
-
-
-def xml_similarity_count():
+def get_parent_childrens_count(file_name):
     # 'd:\\fenlei2.xml'
-    file_name = './a.xml'
-    file_name1 = './b.xml'
+    # file_name = './a.xml'
     R = getXmlData(file_name)
-    X = getXmlData(file_name1)
     df = pd.DataFrame(R,columns=["NO.","parent","level","name"])
-    df1 = pd.DataFrame(X,columns=["NO.","parent","level","name"])
     # df.merge(df1)
     grouped = df.groupby(by="parent")
     # print(grouped)
@@ -109,10 +105,10 @@ def xml_similarity_count():
     # print(list(grouped.count().index))
     parent_childrens_count = []
     for i in list(grouped.count().index): # i是parent
-        print(df[df["parent"] == i])
+        # print(df[df["parent"] == i])
         # print(i,df[df["parent"] == i].iloc[0,2],df[df["parent"] == i].shape[0]) # parent,level,chindrens
         parent_childrens_count.append([i,df[df["parent"] == i].iloc[0,2],df[df["parent"] == i].shape[0]])
-    print(parent_childrens_count)
+    # print(parent_childrens_count)
     childrens_count = {}
     for i in parent_childrens_count:
         if i[1] in childrens_count:
@@ -120,7 +116,9 @@ def xml_similarity_count():
                 childrens_count[i[1]] = i[2]
         else:
             childrens_count[i[1]] = i[2]
-    print(childrens_count)
+
+    # print(childrens_count)
+    return parent_childrens_count
     # u = df["level"].unique() # 返回NumPy数组ndarray中唯一元素值的列表
     # print(u)
     # print(type(u))
@@ -131,6 +129,34 @@ def xml_similarity_count():
     # for x in R:
     #     print(x)
     #     pass
+
+def xml_similarity_count():
+    # 'd:\\fenlei2.xml'
+    file_name = './a.xml'
+    parent_childrens_count = get_parent_childrens_count(file_name)
+    print(parent_childrens_count)
+    childrens_count = {}
+    for i in parent_childrens_count:
+        if i[1] in childrens_count:
+            if childrens_count[i[1]] < i[2]:
+                childrens_count[i[1]] = i[2]
+        else:
+            childrens_count[i[1]] = i[2]
+    file_name = './b.xml'
+    parent_childrens_count = get_parent_childrens_count(file_name)
+    for i in parent_childrens_count:
+        if i[1] in childrens_count:
+            if childrens_count[i[1]] < i[2]:
+                childrens_count[i[1]] = i[2]
+        else:
+            childrens_count[i[1]] = i[2]
+        if i[1] + 1 not in childrens_count:
+            childrens_count[i[1] + 1] = 0
+    print(childrens_count)
+    children_list = get_parent_childrens_count(file_name,childrens_count)
+    for x in children_list:
+        print(x)
+        pass
 
 
 
@@ -143,7 +169,7 @@ if __name__ == '__main__':
     #     pass
     xml_similarity_count()
     d = {}
-    children_list = getXMlSequence(file_name,d)
-    for x in children_list:
-        print(x)
-        pass
+    # children_list = getXMlSequence(file_name,d)
+    # for x in children_list:
+    #     print(x)
+    #     pass
