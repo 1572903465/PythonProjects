@@ -15,9 +15,11 @@ print(df)
 row_dist = pd.DataFrame(squareform((pdist(df,metric='euclidean'))),# euclidean欧几里得距离
                         columns=labels, index=labels)
 print(row_dist)
-
-# row_clusters = linkage(pdist(df,metric='euclidean'),method='complete')
-row_clusters = linkage(df.values,metric='euclidean',method='complete')
+pt_dist =pdist(df,metric='euclidean')
+print(pt_dist,type(pt_dist))
+# row_clusters = linkage(row_dist,metric='euclidean',method='complete')
+row_clusters = linkage(pdist(df,metric='euclidean'),method='complete')
+# row_clusters = linkage(df.values,metric='euclidean',method='complete')
 print(row_clusters)
 
 df_cluser = pd.DataFrame(row_clusters,
@@ -26,16 +28,17 @@ df_cluser = pd.DataFrame(row_clusters,
 
 print(df_cluser)
 
-row_dendr = dendrogram(row_clusters,
-                       labels= labels,
-                       # make dendrogram black (part 2/2)
-                       # color_threshold = np.inf
-                       )
-plt.tight_layout()
-plt.ylabel('Euclidean diatance')
-plt.show()
+# row_dendr = dendrogram(_clusters,
+#                        labels= labels,
+#                        # make dendrogram black (part 2/2)
+#                        # color_threshold = np.inf
+#                        )
+# plt.tight_layout()
+# plt.ylabel('Euclidean diatance')
+# plt.show()
 
-ac = AgglomerativeClustering(n_clusters=2,affinity='euclidean',linkage='complete')
+ac = AgglomerativeClustering(n_clusters=2,affinity='euclidean',linkage='complete',connectivity=None)
+print(x,row_dist)
 labels = ac.fit_predict(x)
+# labels = ac.fit(row_dist)
 print("Cluster labels %s"%labels)
-
